@@ -29,6 +29,13 @@ import Sidebar from '@/components/layout/Sidebar.vue';
               <button class="w-full py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
                 立即登录
               </button>
+              <!-- 添加管理入口 -->
+              <router-link
+                to="/admin/projects"
+                class="block mt-2 text-center text-sm text-gray-400 hover:text-white"
+              >
+                项目管理
+              </router-link>
             </div>
 
             <!-- 统计信息 -->

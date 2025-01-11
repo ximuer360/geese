@@ -1,4 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import Home from '@/views/Home.vue';
+import ProjectDetail from '@/views/ProjectDetail.vue';
+import AdminProjects from '@/views/admin/ProjectList.vue';
+import ProjectEdit from '@/views/admin/ProjectEdit.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -6,22 +10,32 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('@/views/HomeView.vue')
+      component: Home
     },
     {
-      path: '/monthly',
-      name: 'monthly',
-      component: () => import('@/views/MonthlyView.vue')
+      path: '/projects/:id',
+      name: 'project-detail',
+      component: ProjectDetail
     },
     {
-      path: '/ranking',
-      name: 'ranking',
-      component: () => import('@/views/RankingView.vue')
-    },
-    {
-      path: '/articles',
-      name: 'articles',
-      component: () => import('@/views/ArticlesView.vue')
+      path: '/admin',
+      children: [
+        {
+          path: 'projects',
+          name: 'admin-projects',
+          component: AdminProjects
+        },
+        {
+          path: 'projects/new',
+          name: 'project-create',
+          component: ProjectEdit
+        },
+        {
+          path: 'projects/:id/edit',
+          name: 'project-edit',
+          component: ProjectEdit
+        }
+      ]
     }
   ]
 });

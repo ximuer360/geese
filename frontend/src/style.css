@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #13151f;
+  --color-card: #1a1f2d;
+  --color-hover: #2d3343;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: white;
+} 

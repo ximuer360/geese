@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// 项目模型
+model Project {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  repoUrl     String   @unique
+  language    String?
+  stars       Int      @default(0)
+  tags        Tag[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// 标签模型
+model Tag {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  nameEn      String    @unique
+  slug        String    @unique
+  projects    Project[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+} 

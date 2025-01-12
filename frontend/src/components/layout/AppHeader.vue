@@ -1,9 +1,32 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
+import { useRoute } from 'vue-router';
 
+const router = useRouter();
+const route = useRoute();
 const searchQuery = ref('');
+
+// 处理搜索
+const handleSearch = () => {
+  if (searchQuery.value.trim()) {
+    router.push({
+      path: '/',
+      query: { search: searchQuery.value.trim() }
+    });
+  } else {
+    // 如果搜索框为空，清除搜索参数
+    router.push({ path: '/' });
+  }
+};
+
+// 监听回车键
+const handleKeyPress = (e: KeyboardEvent) => {
+  if (e.key === 'Enter') {
+    handleSearch();
+  }
+};
 </script>
 
 <template>
@@ -14,7 +37,8 @@ const searchQuery = ref('');
         <div class="flex items-center flex-1">
           <RouterLink to="/" class="flex items-center space-x-2">
             <Icon icon="simple-icons:github" class="w-8 h-8 text-blue-500" />
-            <span class="text-xl font-bold text-white">项目资源分享</span>
+            <!-- <span class="text-xl font-bold text-white">项目资源分享</span> -->
+            <span class="text-xl font-bold text-white">EnjoyBox</span>
           </RouterLink>
           
           <div class="relative ml-8 flex-1 max-w-lg">
@@ -22,8 +46,15 @@ const searchQuery = ref('');
               v-model="searchQuery"
               type="text"
               placeholder="搜索开源项目"
+              @keyup.enter="handleKeyPress"
               class="w-full px-4 py-1.5 bg-dark-hover rounded-full text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <button
+              @click="handleSearch"
+              class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-white"
+            >
+              <Icon icon="heroicons:magnifying-glass-20-solid" class="w-5 h-5" />
+            </button>
           </div>
         </div>
 

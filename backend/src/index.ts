@@ -40,17 +40,31 @@ app.get('/projects', async (req: Request, res: Response, next: NextFunction) => 
   try {
     const page = Number(req.query.page) || 1;
     const pageSize = Number(req.query.pageSize) || 10;
-    const tag = req.query.tag as string; // 添加标签过滤
+    const tag = req.query.tag as string;
+    const search = req.query.search as string; // 添加搜索参数
     const skip = (page - 1) * pageSize;
 
     // 构建查询条件
-    const where = tag ? {
-      tags: {
+    const where: any = {};
+    
+    // 标签过滤
+    if (tag) {
+      where.tags = {
         some: {
-          name: tag // 通过标签名称过滤
+          name: tag
         }
-      }
-    } : {};
+      };
+    }
+
+    // 搜索条件
+    if (search) {
+      where.OR = [
+        { name: { contains: search } },
+        { description: { contains: search } },
+        { language: { contains: search } },
+        { tags: { some: { name: { contains: search } } } }
+      ];
+    }
 
     const projects = await prisma.project.findMany({
       where,

@@ -51,10 +51,11 @@ export interface ProjectsParams {
   page?: number;
   pageSize?: number;
   tag?: string;
+  search?: string;
 }
 
 // API 接口
-export const getProjects = async (params?: ProjectsParams) => {
+export const getProjects = async (params: ProjectsParams = {}) => {
   const response = await api.get<ProjectsResponse>('/projects', { params });
   return response.data;
 };

@@ -12,13 +12,14 @@ const total = ref(0);
 const currentPage = ref(1);
 const pageSize = ref(12);
 
-const fetchProjects = async (page = 1, tag = '') => {
+const fetchProjects = async (page = 1) => {
   try {
     loading.value = true;
     const response = await getProjects({
       page,
       pageSize: pageSize.value,
-      tag
+      tag: route.query.tag as string,
+      search: route.query.search as string
     });
     projects.value = page === 1 
       ? response.data 
@@ -32,23 +33,24 @@ const fetchProjects = async (page = 1, tag = '') => {
   }
 };
 
-// 加载更多
-const loadMore = () => {
-  if (!loading.value) {
-    fetchProjects(currentPage.value + 1, route.query.tag as string);
-  }
-};
-
 // 监听路由参数变化
 watch(
-  () => route.query.tag,
-  (newTag) => {
-    fetchProjects(1, newTag as string);
+  () => [route.query.tag, route.query.search],
+  () => {
+    projects.value = [];
+    fetchProjects(1);
   }
 );
 
+// 加载更多
+const loadMore = () => {
+  if (!loading.value) {
+    fetchProjects(currentPage.value + 1);
+  }
+};
+
 onMounted(() => {
-  fetchProjects(1, route.query.tag as string);
+  fetchProjects(1);
 });
 </script>
 
@@ -88,6 +90,11 @@ onMounted(() => {
       <!-- 无数据提示 -->
       <div v-else-if="projects.length === 0" class="text-center py-8 text-gray-400">
         暂无项目
+      </div>
+
+      <!-- 搜索结果提示 -->
+      <div v-if="route.query.search" class="mb-4 text-gray-400">
+        搜索 "{{ route.query.search }}" 的结果 ({{ total }} 个)
       </div>
     </template>
   </div>

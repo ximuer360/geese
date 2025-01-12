@@ -9,6 +9,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  optimizeDeps: {
+    include: [
+      '@bytemd/vue-next',
+      '@bytemd/plugin-gfm',
+      '@bytemd/plugin-highlight',
+      'bytemd'
+    ]
+  },
   server: {
     port: 5173
   }

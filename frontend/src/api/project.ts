@@ -37,9 +37,25 @@ api.interceptors.response.use(
   }
 );
 
+export interface ProjectsResponse {
+  data: any[];
+  pagination: {
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  };
+}
+
+export interface ProjectsParams {
+  page?: number;
+  pageSize?: number;
+  tag?: string;
+}
+
 // API 接口
-export const getProjects = async () => {
-  const response = await api.get('/projects');
+export const getProjects = async (params?: ProjectsParams) => {
+  const response = await api.get<ProjectsResponse>('/projects', { params });
   return response.data;
 };
 
@@ -60,5 +76,10 @@ export const updateProject = async (id: string, data: any) => {
 
 export const deleteProject = async (id: string) => {
   const response = await api.delete(`/projects/${id}`);
+  return response.data;
+};
+
+export const getProjectsByTag = async (tagId: string) => {
+  const response = await api.get(`/tags/${tagId}/projects`);
   return response.data;
 }; 

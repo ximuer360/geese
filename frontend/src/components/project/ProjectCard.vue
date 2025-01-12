@@ -19,6 +19,15 @@ const router = useRouter();
 const handleClick = () => {
   router.push(`/projects/${props.project.id}`);
 };
+
+// 格式化 stars 数字
+const formatStars = (stars: number) => {
+  if (!stars) return 0;
+  if (stars >= 1000) {
+    return `${(stars / 1000).toFixed(1)}k`;
+  }
+  return stars;
+};
 </script>
 
 <template>
@@ -36,28 +45,32 @@ const handleClick = () => {
     </div>
 
     <!-- 项目信息 -->
-    <div class="p-4">
-      <h3 class="text-lg font-medium mb-2">{{ project.name }}</h3>
-      <p class="text-sm text-gray-400 mb-4 line-clamp-2">{{ project.description }}</p>
+    <div class="p-3">
+      <!-- 标题 -->
+      <h3 class="text-base font-medium mb-1.5 truncate">{{ project.name }}</h3>
       
-      <div class="flex items-center justify-between text-sm text-gray-400">
-        <div class="flex items-center space-x-4">
+      <!-- 描述 -->
+      <p class="text-sm text-gray-400 mb-2 line-clamp-2">{{ project.description }}</p>
+      
+      <!-- 底部信息 -->
+      <div class="flex items-center justify-between text-xs text-gray-400">
+        <div class="flex items-center gap-3">
           <span v-if="project.language" class="flex items-center">
             <span class="mr-1">🔤</span>
             {{ project.language }}
           </span>
           <span class="flex items-center">
             <span class="mr-1">⭐</span>
-            {{ project.stars }}
+            {{ formatStars(project.stars) }}
           </span>
         </div>
         
         <!-- 标签 -->
-        <div class="flex gap-2">
+        <div class="flex gap-1">
           <span
             v-for="tag in project.tags.slice(0, 2)"
             :key="tag.id"
-            class="px-2 py-1 text-xs bg-gray-700 rounded"
+            class="px-1.5 py-0.5 bg-gray-700 rounded text-xs"
           >
             {{ tag.name }}
           </span>

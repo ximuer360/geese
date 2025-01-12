@@ -19,6 +19,7 @@ interface Project {
     name: string;
   }>;
   createdAt: string;
+  coverImage: string;
 }
 
 const router = useRouter();
@@ -69,66 +70,54 @@ onMounted(() => {
     </div>
 
     <!-- 项目列表 -->
-    <div v-else-if="projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div v-else-if="projects.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <div
         v-for="project in projects"
         :key="project.id"
-        class="bg-dark-hover rounded-lg p-6 hover:bg-opacity-80 transition-colors cursor-pointer"
-        @click="handleProjectClick(project.id)"
+        class="bg-[#1a1f2d] rounded-lg overflow-hidden hover:bg-[#242938] transition-colors"
       >
-        <!-- 项目图片 -->
-        <div v-if="project.images?.length" class="aspect-w-16 aspect-h-9 mb-4">
-          <img
-            :src="project.images[0].url"
-            :alt="project.name"
-            class="object-cover w-full h-full rounded-lg"
-          />
-        </div>
+        <RouterLink :to="`/projects/${project.id}`">
+          <!-- 封面图片 -->
+          <div class="aspect-video relative overflow-hidden">
+            <img
+              v-if="project.coverImage"
+              :src="project.coverImage"
+              :alt="project.name"
+              class="w-full h-full object-cover"
+            />
+            <div v-else class="w-full h-full bg-gray-700 flex items-center justify-center">
+              <span class="text-gray-400">暂无图片</span>
+            </div>
+          </div>
 
-        <!-- 项目信息 -->
-        <div class="space-y-4">
-          <div class="flex items-start justify-between">
-            <div>
-              <h3 class="text-xl font-bold hover:text-blue-400">
-                {{ project.name }}
-              </h3>
-              <div class="flex items-center space-x-2 mt-2">
-                <span
-                  v-for="tag in project.tags"
-                  :key="tag.id"
-                  class="px-3 py-1 bg-dark-card rounded-full text-sm text-gray-400"
-                >
-                  {{ tag.name }}
-                </span>
+          <!-- 项目信息 -->
+          <div class="p-4">
+            <h3 class="text-lg font-medium mb-2 text-white">{{ project.name }}</h3>
+            <p class="text-gray-400 text-sm mb-4 line-clamp-2">
+              {{ project.description }}
+            </p>
+            
+            <!-- 标签 -->
+            <div class="flex flex-wrap gap-2">
+              <span
+                v-for="tag in project.tags"
+                :key="tag.id"
+                class="px-2 py-1 text-xs bg-gray-700 rounded-full text-gray-300"
+              >
+                {{ tag.name }}
+              </span>
+            </div>
+
+            <!-- 项目信息 -->
+            <div class="flex items-center justify-between mt-4 text-sm text-gray-400">
+              <span>{{ project.language }}</span>
+              <div class="flex items-center">
+                <span class="mr-1">⭐</span>
+                {{ project.stars }}
               </div>
             </div>
-            <div class="text-sm text-gray-400">
-              {{ new Date(project.createdAt).toLocaleDateString() }}
-            </div>
           </div>
-
-          <p class="text-gray-300 line-clamp-2">{{ project.description }}</p>
-
-          <div class="flex items-center space-x-4 text-sm text-gray-400">
-            <span v-if="project.language" class="flex items-center">
-              <span class="mr-1">🔤</span>
-              {{ project.language }}
-            </span>
-            <span class="flex items-center">
-              <span class="mr-1">⭐</span>
-              {{ project.stars }}
-            </span>
-            <a
-              :href="project.repoUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-blue-400 hover:text-blue-300"
-              @click.stop
-            >
-              查看源码
-            </a>
-          </div>
-        </div>
+        </RouterLink>
       </div>
     </div>
 

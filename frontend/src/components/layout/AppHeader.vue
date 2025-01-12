@@ -14,7 +14,7 @@ const searchQuery = ref('');
         <div class="flex items-center flex-1">
           <RouterLink to="/" class="flex items-center space-x-2">
             <Icon icon="simple-icons:github" class="w-8 h-8 text-blue-500" />
-            <span class="text-xl font-bold text-white">HelloGitHub</span>
+            <span class="text-xl font-bold text-white">项目资源分享</span>
           </RouterLink>
           
           <div class="relative ml-8 flex-1 max-w-lg">
@@ -46,14 +46,20 @@ const searchQuery = ref('');
 
         <!-- 右侧按钮 -->
         <div class="flex items-center space-x-4 ml-8">
-          <button class="px-4 py-1.5 border border-gray-600 rounded-full text-sm text-gray-300 hover:text-white hover:border-gray-400 transition-colors">
-            提交项目
-          </button>
-          <button class="px-3 py-1.5 bg-blue-500 hover:bg-blue-600 rounded-full text-sm text-white transition-colors">
-            EN
-          </button>
+          <RouterLink 
+            to="/admin"
+            class="px-4 py-1.5 bg-blue-500 hover:bg-blue-600 rounded-lg text-sm text-white transition-colors"
+          >
+            后台管理
+          </RouterLink>
         </div>
       </div>
     </div>
   </header>
-</template> 
+</template>
+
+<style scoped>
+.router-link-active {
+  color: white;
+}
+</style> 
